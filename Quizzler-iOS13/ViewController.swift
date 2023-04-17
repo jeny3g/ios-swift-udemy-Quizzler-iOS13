@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var timer = Timer()
+    
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var progressBar: UIProgressView!
     
@@ -46,9 +48,9 @@ class ViewController: UIViewController {
         
 
         if(userAnswer == actualAnswer){
-            print("Right!")
+            sender.backgroundColor = UIColor.green
         } else{
-            print("Wrong!")
+            sender.backgroundColor = UIColor.red
         }
         
 
@@ -57,11 +59,18 @@ class ViewController: UIViewController {
         } else{
             questionNumber = 0
         }
-        updateUI()
+        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
     }
     
-    func updateUI(){
+    @objc func updateUI(){
         questionLabel.text = quiz[questionNumber].text
+        trueButton.backgroundColor = UIColor.clear
+        falseButton.backgroundColor = UIColor.clear
+        
+        
+        progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
+        timer.invalidate()
     }
     
 }
